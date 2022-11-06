@@ -96,7 +96,38 @@ function getAverageIMDBRating(movies) {
  *  countByRating(movies);
  *  //> { G: 3, PG: 7 }
  */
-function countByRating() { }
+function countByRating(movies) {
+  let ratingObj = {};
+  let sumG = 0;
+  let sumPg = 0;
+  let sumOther = 0;
+  if (movies.length === 0) {
+    return ratingObj;
+  }
+  for (let i = 0; i < movies.length; i++) {
+    if (movies[i].rated === 'G') {
+      ratingObj.G = ++sumG
+    } else if (movies[i].rated === 'PG') {
+      ratingObj.PG = ++sumPg
+    } else {
+      ratingObj[movies[i].rated] = ++sumOther;
+    }
+  }
+  return ratingObj;
+}
+// let ratingObj = {
+//   G: 0,
+//   PG: 0
+// }
+// for (let i = 0; i < movies.length; i++) {
+//   if (movies[i].rated === 'G') {
+//     ratingObj.G++
+//   } else if (movies[i].rated === 'PG') {
+//     ratingObj.PG++
+//   }
+// }
+// console.log(ratingObj)
+// return ratingObj
 
 /**
  * findById()
@@ -112,7 +143,16 @@ function countByRating() { }
       // Toy Story 4
     };
  */
-function findById() { }
+function findById(movies, id) {
+  let movieObj = {};
+  for (let i = 0; i < movies.length; i++) {
+    if (movies[i].imdbID == id) {
+      movieObj = { ...movies[i] }
+      return movieObj;
+    }
+  }
+  return null;
+}
 
 /**
  * filterByGenre()
@@ -134,7 +174,18 @@ function findById() { }
  *  filterByGenre(movies, "Horror")
  *  //> []
  */
-function filterByGenre() { }
+function filterByGenre(movies, genre) {
+  let genreMatch = [];
+  let genLow = genre.toLowerCase();
+  let genProp = genLow[0].toUpperCase() + genLow.substring(1);
+  // console.log(genProp)
+  for (let i = 0; i < movies.length; i++) {
+    if ((movies[i].genre).includes(genProp))
+      genreMatch.push(movies[i]);
+  }
+  return genreMatch;
+}
+
 
 /**
  * getAllMoviesReleasedAtOrBeforeYear()
@@ -158,7 +209,17 @@ function filterByGenre() { }
       }
     ];
  */
-function getAllMoviesReleasedAtOrBeforeYear() { }
+function getAllMoviesReleasedAtOrBeforeYear(movies, year) {
+  let yearMatch = [];
+  for (let i = 0; i < movies.length; i++) {
+    let movRelease = (movies[i].released.split(' '));
+    let movReleaseYear = Number(movRelease.slice(2));
+    // console.log(movReleaseYear);
+    if (movReleaseYear <= year)
+      yearMatch.push(movies[i]);
+  }
+  return yearMatch;
+}
 
 /**
  * getBiggestBoxOfficeMovie()
@@ -171,7 +232,19 @@ function getAllMoviesReleasedAtOrBeforeYear() { }
  *  getBiggestBoxOfficeMovie(movies);
  *  //> "Incredibles 2"
  */
-function getBiggestBoxOfficeMovie() { }
+function getBiggestBoxOfficeMovie(movies) {
+  let biggieBox = 0;
+  let biggieBoxName = null;
+  for (let i = 0; i < movies.length; i++) {
+    let boxNumb = movies[i].boxOffice.split(',').join('').substring(1);
+    if (Number(boxNumb) > biggieBox) {
+      biggieBox = boxNumb;
+      biggieBoxName = movies[i].title;
+    }
+    // console.log(boxNumb);
+  }
+  return biggieBoxName;
+}
 
 // Do not change anything below this line.
 module.exports = {
